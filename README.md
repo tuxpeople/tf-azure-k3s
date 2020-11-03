@@ -2,7 +2,7 @@
 
 1. Clone this repository
 2. (Optional) create a tfvars file in the infra directory like this:
-````
+```
 prefix = "k3s"
 location = "eastus"
 azure_subscription_id = "your-azure-subscription-id"
