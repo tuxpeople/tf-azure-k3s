@@ -65,18 +65,29 @@ resource "azurerm_network_interface" "internal" {
 }
 
 resource "azurerm_network_security_group" "k3sserver" {
-  name                = "tls_k3sserver"
+  name                = "ingress_k3sserver"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   security_rule {
     access                     = "Allow"
     direction                  = "Inbound"
-    name                       = "tls"
+    name                       = "https"
     priority                   = 100
     protocol                   = "Tcp"
     source_port_range          = "*"
     source_address_prefix      = "*"
     destination_port_range     = "443"
+    destination_address_prefix = azurerm_network_interface.main.private_ip_address
+  }
+  security_rule {
+    access                     = "Allow"
+    direction                  = "Inbound"
+    name                       = "http"
+    priority                   = 100
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    source_address_prefix      = "*"
+    destination_port_range     = "80"
     destination_address_prefix = azurerm_network_interface.main.private_ip_address
   }
 }
@@ -120,15 +131,33 @@ resource "azurerm_linux_virtual_machine" "main" {
     caching              = "ReadWrite"
   }
 
-#  provisioner "remote-exec" {
-#    inline = [
-#      "while ! command -v kubectl &> /dev/null; do sleep 10; done; sleep 30; kubectl get nodes",
-#    ]
-#
-#    connection {
-#      host     = self.public_ip_address
-#      user     = self.admin_username
-#      password = self.admin_password
-#    }
-#  }
+  provisioner "file" {
+    source      = "../scripts/check.sh"
+    destination = "/usr/local/bin/check.sh"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /usr/local/bin/check.sh",
+      "/usr/local/bin/check.sh args",
+    ]
+
+    connection {
+      host     = self.public_ip_address
+      user     = self.admin_username
+      password = self.admin_password
+    }
+  }
+}
+
+output "public_ip" {
+  value = azurerm_network_interface.internal.ip_configuration[0].private_ip_address
+}
+
+output "utility_ip" {
+  value = azurerm_network_interface.main.ip_configuration[0].private_ip_address
+}
+
+output "fqdn" {
+  value = azurerm_public_ip.pip.fqdn
 }
