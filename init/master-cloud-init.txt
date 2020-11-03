@@ -1,0 +1,9 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - curl
+output: {all: '| tee -a /var/log/cloud-init-output.log'}
+runcmd:
+  - curl https://releases.rancher.com/install-docker/18.09.sh | sh
+  - sudo usermod -aG docker adminuser
+  - curl -sfL https://get.k3s.io | sh -
