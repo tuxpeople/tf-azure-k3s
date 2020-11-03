@@ -83,7 +83,7 @@ resource "azurerm_network_security_group" "k3sserver" {
     access                     = "Allow"
     direction                  = "Inbound"
     name                       = "http"
-    priority                   = 100
+    priority                   = 101
     protocol                   = "Tcp"
     source_port_range          = "*"
     source_address_prefix      = "*"
@@ -133,13 +133,19 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   provisioner "file" {
     source      = "../scripts/check.sh"
-    destination = "/usr/local/bin/check.sh"
+    destination = "/tmp/check.sh"
+
+    connection {
+      host     = self.public_ip_address
+      user     = self.admin_username
+      password = self.admin_password
+    }
   }
 
   provisioner "remote-exec" {
     inline = [
-      "chmod +x /usr/local/bin/check.sh",
-      "/usr/local/bin/check.sh args",
+      "chmod +x /tmp/check.sh",
+      "/tmp/check.sh",
     ]
 
     connection {
