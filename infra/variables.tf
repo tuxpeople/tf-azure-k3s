@@ -9,19 +9,22 @@ variable "location"  {
   default = "eastus"
 }
 variable "azure_subscription_id"  {
-  description = "your-azure-subscription-id"
+  description = "Your Azure subscription ID"
   type = string
   default = ""
 }
 variable "azure_client_id"  {
-  description = "your-azure-client-id"
+  description = "Your Azure client ID"
   type = string
   default = ""
 }
 variable "azure_client_secret"  {
-  description = "your-azure-client-secret"
+  description = "Your Azure Client Secret"
   type = string
   default = ""
 }
 variable "azure_tenant_id"  {
-  description = "your-azure-tenant-id"
+  description = "Your Azure tenant ID"
+  type = string
+  default = ""
+}
