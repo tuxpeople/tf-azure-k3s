@@ -157,11 +157,11 @@ resource "azurerm_linux_virtual_machine" "main" {
 }
 
 output "public_ip" {
-  value = azurerm_network_interface.internal.ip_configuration[0].private_ip_address
+  value = azurerm_linux_virtual_machine.main.public_ip_address
 }
 
 output "utility_ip" {
-  value = azurerm_network_interface.main.ip_configuration[0].private_ip_address
+  value = azurerm_linux_virtual_machine.main.private_ip_address
 }
 
 output "fqdn" {
