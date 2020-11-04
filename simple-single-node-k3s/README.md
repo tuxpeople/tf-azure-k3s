@@ -1,5 +1,7 @@
 # Create a simple single node k3s cluster in Azure
 
+Deploys a small one node K3S cluster in a given region. Small OS disk, no extra data disk. Uses one Standard_B2s machine with Ubuntu.
+
 1. Clone this repository
 2. (Optional) create a tfvars file in the infra directory like this:
 ```
