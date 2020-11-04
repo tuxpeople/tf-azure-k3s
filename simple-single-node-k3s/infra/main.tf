@@ -130,30 +130,6 @@ resource "azurerm_linux_virtual_machine" "main" {
     storage_account_type = "Standard_LRS"
     caching              = "ReadWrite"
   }
-
-  provisioner "file" {
-    source      = "../scripts/check.sh"
-    destination = "/tmp/check.sh"
-
-    connection {
-      host     = self.public_ip_address
-      user     = self.admin_username
-      password = self.admin_password
-    }
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x /tmp/check.sh",
-      "/tmp/check.sh",
-    ]
-
-    connection {
-      host     = self.public_ip_address
-      user     = self.admin_username
-      password = self.admin_password
-    }
-  }
 }
 
 output "public_ip" {
