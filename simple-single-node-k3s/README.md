@@ -1,4 +1,4 @@
-# Create a single node k3s cluster in Azure
+# Create a simple single node k3s cluster in Azure
 
 1. Clone this repository
 2. (Optional) create a tfvars file in the infra directory like this:
