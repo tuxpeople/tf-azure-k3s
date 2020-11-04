@@ -1,5 +1,3 @@
-WARNING: THIS IS WORK IN PROGRESS
-
 # Create a single node k3s cluster in Azure
 
 1. Clone this repository
